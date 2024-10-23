@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from ATS import ats
-from ATS import rename
-from django.http import HttpResponse, FileResponse
-import os
+import io
 
 def index(request):
     if request.method == 'POST':
@@ -23,23 +21,17 @@ def index(request):
 
         ats.skills = updated_skills
         ats.Role = new_role
-        rename.collect_and_rename_pdfs(file_name)
-        ats.create_pdf(f'./templates/{file_name}')
         return redirect('download')
 
     return render(request, 'index.html')
-
 def download(request):
-    file_path = os.path.join('./templates', file_name)
-    print(file_path)
-
-    try:
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), content_type='application/pdf', as_attachment=True, filename=file_name)
-        else:
-            return HttpResponse("File not found.", status=404)
-    except Exception as e:
-        return HttpResponse(f"An error occurred: {e}", status=500)
-
+    buffer = io.BytesIO()
+    ats.buffer = buffer
+    ats.create_pdf(buffer)
+    buffer.seek(0)
+    print(file_name)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    return response
 
     

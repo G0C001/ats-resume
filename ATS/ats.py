@@ -4,6 +4,7 @@ from reportlab.lib import colors
 
 skills = []
 Role = ''
+buffer = None
 def draw_line(c, x, y, width):
     c.setStrokeColor(colors.black)
     c.line(x, y, width - 40, y)
@@ -37,10 +38,10 @@ def draw_professional_summary(c, x, y):
 
     """ 
     I am a proactive Computer Science Engineering graduate from Anna University, 
-with a strong background in technology and innovation. I thrive in creating 
-impactful solutions and have a passion for delivering high-quality results. My 
-excellent problem-solving abilities and eagerness to contribute make me a great 
-fit for entry-level roles."""
+    with a strong background in technology and innovation. I thrive in creating 
+    impactful solutions and have a passion for delivering high-quality results. My 
+    excellent problem-solving abilities and eagerness to contribute make me a great 
+    fit for entry-level roles."""
     c.drawString(x + 20, y, "I am a proactive Computer Science Engineering graduate from Anna University, with a strong")
     y -= 15
     c.drawString(x + 20, y, "background in technology and innovation. I thrive in creating impactful solutions and have")
@@ -104,7 +105,7 @@ def draw_skills_section(c, x, y, width):
 
     column_count = 4  
     column_width = (width - 80) // column_count  
-    row_height = 15  
+    row_height = 20  
     rows_needed = (len(skills) + column_count - 1) // column_count  
 
     for row in range(rows_needed):
@@ -234,7 +235,7 @@ def draw_interests_section(c, x, y):
 
 
 def create_pdf(filename):
-    c = canvas.Canvas(filename, pagesize=letter)
+    c = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
     x, y = 40, height - 40  
 
