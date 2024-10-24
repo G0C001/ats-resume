@@ -9,11 +9,7 @@ def index(request):
         new_skills = request.POST.get('skills')
         global file_name
         file_name = f'gokulvasanth_{new_role}.pdf'
-        updated_skills = [
-            "Ajax", "Anaconda", "Linux", "API", "Bootstrap", "CSS", "Django", "AI/ML",
-            "Github", "HTML", "Javascript", "Jupyter", "MySQL", "Python",
-            "Visual Studio", "Visual Studio Code", "Windows"
-        ]
+        updated_skills = []
 
         new_skills = new_skills.split(',')
         for skill in new_skills:
